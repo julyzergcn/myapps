@@ -1,16 +1,9 @@
-"""
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
+from django.test import TestCase, client
+import urlparse
 
-Replace this with more appropriate tests for your application.
-"""
-
-from django.test import TestCase
-
-
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.assertEqual(1 + 1, 2)
+class CsrfGetTest(TestCase):
+    
+    def test_csrf_get(self):
+        c = client.Client()
+        response = c.get('/some/path/?csrfmiddlewaretoken=a&*2;b&aa=22&bb=33')
+        self.assertEqual(urlparse.urlparse(response.get('location')).query, urlparse.urlparse('/some/path/?aa=22&bb=33').query)
