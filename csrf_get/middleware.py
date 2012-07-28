@@ -3,7 +3,9 @@ from django.http import HttpResponseRedirect
 
 class CsrfMiddleware(object):
     '''
-    Detect "csrfmiddlewaretoken" in the request string, and if it is there then remove it and redirect to the new version without that parameter. For example:
+    Detect "csrfmiddlewaretoken" in the request string, and if it is there then
+    remove it and redirect to the new version without that parameter.
+    For example:
 
     /foo?a=1&b=2&csrfmiddlewaretoken=foo&d=4
 

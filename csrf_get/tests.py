@@ -3,7 +3,9 @@ import urlparse
 
 class CsrfGetTest(TestCase):
     '''
-    Detect "csrfmiddlewaretoken" in the request string, and if it is there then remove it and redirect to the new version without that parameter. For example:
+    Detect "csrfmiddlewaretoken" in the request string, and if it is there 
+    then remove it and redirect to the new version without that parameter.
+    For example:
 
     /foo?a=1&b=2&csrfmiddlewaretoken=foo&d=4
 
@@ -15,7 +17,11 @@ class CsrfGetTest(TestCase):
         c = client.Client()
         response = c.get('/foo?a=1&b=2&csrfmiddlewaretoken=foo&d=4')
         location_url = response.get('location')
+        
+        # get the query string from response
         query_string = urlparse.urlparse(location_url).query
         
+        # get the query string that should be returned for test
         test_query_string = urlparse.urlparse('/foo?a=1&b=2&d=4').query
+        
         self.assertEqual(query_string, test_query_string)
