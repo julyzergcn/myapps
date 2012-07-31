@@ -35,3 +35,14 @@ class CsrfGetTest(TestCase):
         
         self.assertEqual(full_path, '/foo?a=1&b=2&d=4')
     
+    def test_only_csrfmiddlewaretoken(self):
+        c = client.Client()
+        response = c.get('/foo?csrfmiddlewaretoken=foo')
+        location_url = response.get('location')
+        parse_result = urlparse.urlparse(location_url)
+        if parse_result.query:
+            full_path = parse_result.path + '?' + parse_result.query
+        else:
+            full_path = parse_result.path
+        self.assertEqual(full_path, '/foo')
+        

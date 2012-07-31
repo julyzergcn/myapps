@@ -20,8 +20,11 @@ class CsrfMiddleware(object):
             
             # query_dict is a MultiValueDict, e.g. {u'a': [u'1'], u'b': [u'2'], u'd': [u'4']}
             # convert query_dict to a list of tuple of string
-            query_tuple_list = [(k, v[0]) for k,v in query_dict.items()]
-            query_string = urlencode(query_tuple_list)
-            redirect_url = request.path + '?' + query_string
+            if len(query_dict) > 0:
+                query_tuple_list = [(k, v[0]) for k,v in query_dict.items()]
+                query_string = urlencode(query_tuple_list)
+                redirect_url = request.path + '?' + query_string
+            else:
+                redirect_url = request.path
             return HttpResponseRedirect(redirect_url)
     
